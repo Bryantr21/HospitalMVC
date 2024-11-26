@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="HospitalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Citas">
+          <Key>
+            <PropertyRef Name="ID_cita" />
+          </Key>
+          <Property Name="ID_cita" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="doctor_ID" Type="int" Nullable="false" />
+          <Property Name="paciente_ID" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="hora" Type="time" Precision="7" Nullable="false" />
+          <Property Name="motivo" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Doctores">
+          <Key>
+            <PropertyRef Name="ID_doctor" />
+          </Key>
+          <Property Name="ID_doctor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="telefono" Type="varchar" MaxLength="15" />
+          <Property Name="especialidad_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Especialidades">
+          <Key>
+            <PropertyRef Name="ID_especialidad" />
+          </Key>
+          <Property Name="ID_especialidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pacientes">
+          <Key>
+            <PropertyRef Name="ID_paciente" />
+          </Key>
+          <Property Name="ID_paciente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="fecha_nacimiento" Type="date" Nullable="false" />
+          <Property Name="telefono" Type="varchar" MaxLength="15" />
+          <Property Name="direccion" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Procedimientos">
+          <Key>
+            <PropertyRef Name="ID_procedimiento" />
+          </Key>
+          <Property Name="ID_procedimiento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="255" />
+          <Property Name="costo" Type="float" />
+        </EntityType>
+        <EntityType Name="Procedimientos_Citas">
+          <Key>
+            <PropertyRef Name="cita_ID" />
+            <PropertyRef Name="procedimiento_ID" />
+          </Key>
+          <Property Name="cita_ID" Type="int" Nullable="false" />
+          <Property Name="procedimiento_ID" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__Citas__doctor_ID__02FC7413">
+          <End Role="Doctores" Type="Self.Doctores" Multiplicity="1" />
+          <End Role="Citas" Type="Self.Citas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctores">
+              <PropertyRef Name="ID_doctor" />
+            </Principal>
+            <Dependent Role="Citas">
+              <PropertyRef Name="doctor_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Citas__paciente___03F0984C">
+          <End Role="Pacientes" Type="Self.Pacientes" Multiplicity="1" />
+          <End Role="Citas" Type="Self.Citas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pacientes">
+              <PropertyRef Name="ID_paciente" />
+            </Principal>
+            <Dependent Role="Citas">
+              <PropertyRef Name="paciente_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Doctores__especi__7C4F7684">
+          <End Role="Especialidades" Type="Self.Especialidades" Multiplicity="1" />
+          <End Role="Doctores" Type="Self.Doctores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especialidades">
+              <PropertyRef Name="ID_especialidad" />
+            </Principal>
+            <Dependent Role="Doctores">
+              <PropertyRef Name="especialidad_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__cita___3C34F16F">
+          <End Role="Citas" Type="Self.Citas" Multiplicity="1" />
+          <End Role="Procedimientos_Citas" Type="Self.Procedimientos_Citas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Citas">
+              <PropertyRef Name="ID_cita" />
+            </Principal>
+            <Dependent Role="Procedimientos_Citas">
+              <PropertyRef Name="cita_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__proce__3D2915A8">
+          <End Role="Procedimientos" Type="Self.Procedimientos" Multiplicity="1" />
+          <End Role="Procedimientos_Citas" Type="Self.Procedimientos_Citas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Procedimientos">
+              <PropertyRef Name="ID_procedimiento" />
+            </Principal>
+            <Dependent Role="Procedimientos_Citas">
+              <PropertyRef Name="procedimiento_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HospitalModelStoreContainer">
+          <EntitySet Name="Citas" EntityType="Self.Citas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Doctores" EntityType="Self.Doctores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Especialidades" EntityType="Self.Especialidades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pacientes" EntityType="Self.Pacientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Procedimientos" EntityType="Self.Procedimientos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Procedimientos_Citas" EntityType="Self.Procedimientos_Citas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Citas__doctor_ID__02FC7413" Association="Self.FK__Citas__doctor_ID__02FC7413">
+            <End Role="Doctores" EntitySet="Doctores" />
+            <End Role="Citas" EntitySet="Citas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Citas__paciente___03F0984C" Association="Self.FK__Citas__paciente___03F0984C">
+            <End Role="Pacientes" EntitySet="Pacientes" />
+            <End Role="Citas" EntitySet="Citas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Doctores__especi__7C4F7684" Association="Self.FK__Doctores__especi__7C4F7684">
+            <End Role="Especialidades" EntitySet="Especialidades" />
+            <End Role="Doctores" EntitySet="Doctores" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__cita___3C34F16F" Association="Self.FK__Procedimi__cita___3C34F16F">
+            <End Role="Citas" EntitySet="Citas" />
+            <End Role="Procedimientos_Citas" EntitySet="Procedimientos_Citas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__proce__3D2915A8" Association="Self.FK__Procedimi__proce__3D2915A8">
+            <End Role="Procedimientos" EntitySet="Procedimientos" />
+            <End Role="Procedimientos_Citas" EntitySet="Procedimientos_Citas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HospitalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Citas">
+          <Key>
+            <PropertyRef Name="ID_cita" />
+          </Key>
+          <Property Name="ID_cita" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="doctor_ID" Type="Int32" Nullable="false" />
+          <Property Name="paciente_ID" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="hora" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="motivo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Doctores" Relationship="Self.FK__Citas__doctor_ID__02FC7413" FromRole="Citas" ToRole="Doctores" />
+          <NavigationProperty Name="Pacientes" Relationship="Self.FK__Citas__paciente___03F0984C" FromRole="Citas" ToRole="Pacientes" />
+          <NavigationProperty Name="Procedimientos_Citas" Relationship="Self.FK__Procedimi__cita___3C34F16F" FromRole="Citas" ToRole="Procedimientos_Citas" />
+        </EntityType>
+        <EntityType Name="Doctores">
+          <Key>
+            <PropertyRef Name="ID_doctor" />
+          </Key>
+          <Property Name="ID_doctor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="especialidad_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Citas" Relationship="Self.FK__Citas__doctor_ID__02FC7413" FromRole="Doctores" ToRole="Citas" />
+          <NavigationProperty Name="Especialidades" Relationship="Self.FK__Doctores__especi__7C4F7684" FromRole="Doctores" ToRole="Especialidades" />
+        </EntityType>
+        <EntityType Name="Especialidades">
+          <Key>
+            <PropertyRef Name="ID_especialidad" />
+          </Key>
+          <Property Name="ID_especialidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Doctores" Relationship="Self.FK__Doctores__especi__7C4F7684" FromRole="Especialidades" ToRole="Doctores" />
+        </EntityType>
+        <EntityType Name="Pacientes">
+          <Key>
+            <PropertyRef Name="ID_paciente" />
+          </Key>
+          <Property Name="ID_paciente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fecha_nacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Citas" Relationship="Self.FK__Citas__paciente___03F0984C" FromRole="Pacientes" ToRole="Citas" />
+        </EntityType>
+        <EntityType Name="Procedimientos">
+          <Key>
+            <PropertyRef Name="ID_procedimiento" />
+          </Key>
+          <Property Name="ID_procedimiento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="costo" Type="Double" />
+          <NavigationProperty Name="Procedimientos_Citas" Relationship="Self.FK__Procedimi__proce__3D2915A8" FromRole="Procedimientos" ToRole="Procedimientos_Citas" />
+        </EntityType>
+        <EntityType Name="Procedimientos_Citas">
+          <Key>
+            <PropertyRef Name="cita_ID" />
+            <PropertyRef Name="procedimiento_ID" />
+          </Key>
+          <Property Name="cita_ID" Type="Int32" Nullable="false" />
+          <Property Name="procedimiento_ID" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Citas" Relationship="Self.FK__Procedimi__cita___3C34F16F" FromRole="Procedimientos_Citas" ToRole="Citas" />
+          <NavigationProperty Name="Procedimientos" Relationship="Self.FK__Procedimi__proce__3D2915A8" FromRole="Procedimientos_Citas" ToRole="Procedimientos" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK__Citas__doctor_ID__02FC7413">
+          <End Role="Doctores" Type="Self.Doctores" Multiplicity="1" />
+          <End Role="Citas" Type="Self.Citas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctores">
+              <PropertyRef Name="ID_doctor" />
+            </Principal>
+            <Dependent Role="Citas">
+              <PropertyRef Name="doctor_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Citas__paciente___03F0984C">
+          <End Role="Pacientes" Type="Self.Pacientes" Multiplicity="1" />
+          <End Role="Citas" Type="Self.Citas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pacientes">
+              <PropertyRef Name="ID_paciente" />
+            </Principal>
+            <Dependent Role="Citas">
+              <PropertyRef Name="paciente_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__cita___3C34F16F">
+          <End Role="Citas" Type="Self.Citas" Multiplicity="1" />
+          <End Role="Procedimientos_Citas" Type="Self.Procedimientos_Citas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Citas">
+              <PropertyRef Name="ID_cita" />
+            </Principal>
+            <Dependent Role="Procedimientos_Citas">
+              <PropertyRef Name="cita_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Doctores__especi__7C4F7684">
+          <End Role="Especialidades" Type="Self.Especialidades" Multiplicity="1" />
+          <End Role="Doctores" Type="Self.Doctores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especialidades">
+              <PropertyRef Name="ID_especialidad" />
+            </Principal>
+            <Dependent Role="Doctores">
+              <PropertyRef Name="especialidad_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Procedimi__proce__3D2915A8">
+          <End Role="Procedimientos" Type="Self.Procedimientos" Multiplicity="1" />
+          <End Role="Procedimientos_Citas" Type="Self.Procedimientos_Citas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Procedimientos">
+              <PropertyRef Name="ID_procedimiento" />
+            </Principal>
+            <Dependent Role="Procedimientos_Citas">
+              <PropertyRef Name="procedimiento_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HospitalEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Citas" EntityType="Self.Citas" />
+          <EntitySet Name="Doctores" EntityType="Self.Doctores" />
+          <EntitySet Name="Especialidades" EntityType="Self.Especialidades" />
+          <EntitySet Name="Pacientes" EntityType="Self.Pacientes" />
+          <EntitySet Name="Procedimientos" EntityType="Self.Procedimientos" />
+          <EntitySet Name="Procedimientos_Citas" EntityType="Self.Procedimientos_Citas" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK__Citas__doctor_ID__02FC7413" Association="Self.FK__Citas__doctor_ID__02FC7413">
+            <End Role="Doctores" EntitySet="Doctores" />
+            <End Role="Citas" EntitySet="Citas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Citas__paciente___03F0984C" Association="Self.FK__Citas__paciente___03F0984C">
+            <End Role="Pacientes" EntitySet="Pacientes" />
+            <End Role="Citas" EntitySet="Citas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__cita___3C34F16F" Association="Self.FK__Procedimi__cita___3C34F16F">
+            <End Role="Citas" EntitySet="Citas" />
+            <End Role="Procedimientos_Citas" EntitySet="Procedimientos_Citas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Doctores__especi__7C4F7684" Association="Self.FK__Doctores__especi__7C4F7684">
+            <End Role="Especialidades" EntitySet="Especialidades" />
+            <End Role="Doctores" EntitySet="Doctores" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Procedimi__proce__3D2915A8" Association="Self.FK__Procedimi__proce__3D2915A8">
+            <End Role="Procedimientos" EntitySet="Procedimientos" />
+            <End Role="Procedimientos_Citas" EntitySet="Procedimientos_Citas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HospitalModelStoreContainer" CdmEntityContainer="HospitalEntities1">
+          <EntitySetMapping Name="Citas">
+            <EntityTypeMapping TypeName="HospitalModel.Citas">
+              <MappingFragment StoreEntitySet="Citas">
+                <ScalarProperty Name="ID_cita" ColumnName="ID_cita" />
+                <ScalarProperty Name="doctor_ID" ColumnName="doctor_ID" />
+                <ScalarProperty Name="paciente_ID" ColumnName="paciente_ID" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="hora" ColumnName="hora" />
+                <ScalarProperty Name="motivo" ColumnName="motivo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Doctores">
+            <EntityTypeMapping TypeName="HospitalModel.Doctores">
+              <MappingFragment StoreEntitySet="Doctores">
+                <ScalarProperty Name="ID_doctor" ColumnName="ID_doctor" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="especialidad_ID" ColumnName="especialidad_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Especialidades">
+            <EntityTypeMapping TypeName="HospitalModel.Especialidades">
+              <MappingFragment StoreEntitySet="Especialidades">
+                <ScalarProperty Name="ID_especialidad" ColumnName="ID_especialidad" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pacientes">
+            <EntityTypeMapping TypeName="HospitalModel.Pacientes">
+              <MappingFragment StoreEntitySet="Pacientes">
+                <ScalarProperty Name="ID_paciente" ColumnName="ID_paciente" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="fecha_nacimiento" ColumnName="fecha_nacimiento" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Procedimientos">
+            <EntityTypeMapping TypeName="HospitalModel.Procedimientos">
+              <MappingFragment StoreEntitySet="Procedimientos">
+                <ScalarProperty Name="ID_procedimiento" ColumnName="ID_procedimiento" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="costo" ColumnName="costo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Procedimientos_Citas">
+            <EntityTypeMapping TypeName="HospitalModel.Procedimientos_Citas">
+              <MappingFragment StoreEntitySet="Procedimientos_Citas">
+                <ScalarProperty Name="cita_ID" ColumnName="cita_ID" />
+                <ScalarProperty Name="procedimiento_ID" ColumnName="procedimiento_ID" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="HospitalModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,42 @@
+﻿@model HospitalMVC.Models.Procedimientos_Citas
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Procedimientos_Citas</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Citas.motivo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Citas.motivo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Procedimientos.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Procedimientos.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
