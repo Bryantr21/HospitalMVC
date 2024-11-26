@@ -145,6 +145,7 @@
     <Compile Include="Models\Doctores.cs">
       <DependentUpon>HospitalModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enum.cs" />
     <Compile Include="Models\Especialidades.cs">
       <DependentUpon>HospitalModel.tt</DependentUpon>
     </Compile>
